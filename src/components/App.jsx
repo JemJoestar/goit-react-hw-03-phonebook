@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import { Filter } from './Filter';
 
 export class App extends Component {
+  #LOCAL_CONTACTS_KEY = 'local-contacts';
   state = {
     contacts: [],
     filter: '',
@@ -27,6 +28,15 @@ export class App extends Component {
       ],
     }));
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    localStorage.setItem(this.#LOCAL_CONTACTS_KEY, JSON.stringify(this.state.contacts));
+  }
+
+  componentDidMount() {
+    this.setState({ contacts: JSON.parse(localStorage.getItem(this.#LOCAL_CONTACTS_KEY)) ?? [] });
+  }
+
 
   // & Оновлення стейту при вводі
   handleInput = event => {
